@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <script type="text/javascript"
+                src="jquery-1.4.4.min.js">
+        </script>
+        <script type="text/javascript">
+            $(function(){
+                $('*').each(function() {
+                    this.onclick = function (event) {
+                        if (!event) event = window.event;
+                        var target = (event.target) ?
+                                     event.target : event.srcElement;
+                        say('For ' + this.tagName + '#' + this.id +
+                            ' target is ' + target.id);
+                    }
+                });
+            });
+            function say(text) {
+                $('#console').append('<div>' + new Date() + ' ' + text + '</div>');
+            }
+        </script>
+    </head>
+    <body>
+        <div id='grandpa'>
+            <div id='pops'>
+                <img id='img' src='KISS.jpg' />
+            </div>
+        </div>
+        <div id='console'></div>
+    </body>
+</html>

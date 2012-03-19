@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <script type="text/javascript"
+                src="jquery-1.4.4.min.js">
+        </script>
+        <script type="text/javascript">
+            $(function(){
+                element = $('#img')[0];
+                element.addEventListener(
+                    'click',
+                    function (event) {
+                        say('once');
+                    },
+                    false
+                );
+
+                element.addEventListener(
+                    'click',
+                    function (event) {
+                        say('twice');
+                    },
+                    false
+                );
+
+                element.addEventListener(
+                    'click',
+                    function (event) {
+                        say('third');
+                    },
+                    false
+                );
+            });
+            function say(text) {
+                $('#console').append('<div>' + new Date() + ' ' + text + '</div>');
+            }
+        </script>
+    </head>
+    <body>
+        <div id='grandpa'>
+            <div id='pops'>
+                <img id='img' src='KISS.jpg' />
+            </div>
+        </div>
+        <div id='console'></div>
+    </body>
+</html>

@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <script type="text/javascript"
+                src="jquery-1.4.4.min.js">
+        </script>
+        <script type="text/javascript">
+            $(function(){
+                $('#img')[0].onmouseover = function (event) {
+                    say('hello world');
+                }
+            });
+            function say(text) {
+                $('#console').append('<div>' + new Date() + ' ' + text + '</div>');
+            }
+        </script>
+    </head>
+    <body>
+        <img id='img' src='KISS.jpg'
+             onclick="say('Clicked!')"/>
+        <div id='console'></div>
+    </body>
+</html>
