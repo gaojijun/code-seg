@@ -1,5 +1,5 @@
 import web
-import model
+import trac.model.wiki as tmw
 import markdown
 
 
@@ -24,19 +24,19 @@ render = web.template.render(
 
 class Index:
     def GET(self):
-        pages = model.get_pages()
+        pages = tmw.get_pages()
         return render.index(pages)
 
 class Page:
     def GET(self, url):
-        page = model.get_page_by_url(url)
+        page = tmw.get_page_by_url(url)
         if not page:
             raise web.seeother('/new?url=%s' % web.websafe(url))
         return render.view(page)
 
 class New:
     def not_page_exists(url):
-        return not bool(model.get_page_by_url(url))
+        return not bool(tmw.get_page_by_url(url))
 
     page_exists_validator = web.form.Validator(
         'Page already exists', not_page_exists)
@@ -64,12 +64,12 @@ class New:
         form = self.form()
         if not form.validates():
             return render.new(form)
-        model.new_page(form.d.url, form.d.title, form.d.content)
+        tmw.new_page(form.d.url, form.d.title, form.d.content)
         raise web.seeother('/' + form.d.url)
 
 class Delete:
     def POST(self, id):
-        model.del_page(int(id))
+        tmw.del_page(int(id))
         raise web.seeother('/')
 
 class Edit:
@@ -88,7 +88,7 @@ class Edit:
     )
 
     def GET(self, id):
-        page = model.get_page_by_id(int(id))
+        page = tmw.get_page_by_id(int(id))
         form = self.form()
         form.fill(page)
         return render.edit(page, form)
@@ -96,10 +96,10 @@ class Edit:
 
     def POST(self, id):
         form = self.form()
-        page = model.get_page_by_id(int(id))
+        page = tmw.get_page_by_id(int(id))
         if not form.validates():
             return render.edit(page, form)
-        model.update_page(int(id), form.d.url, form.d.title, form.d.content)
+        tmw.update_page(int(id), form.d.url, form.d.title, form.d.content)
         raise web.seeother('/')
 
 
