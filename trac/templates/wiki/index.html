@@ -1,0 +1,10 @@
+$def with (pages)
+
+<h2>Wiki Pages:</h2>
+
+<ul>
+$for page in pages:
+    <li><a href="/wiki/$page.url">$page.url</a></li>
+
+</ul>
+
