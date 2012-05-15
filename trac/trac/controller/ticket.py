@@ -1,4 +1,4 @@
-import trac.model.wiki as tmw
+import trac.model.ticket as tmt
 import web
 import markdown
 
@@ -8,41 +8,59 @@ t_globals = {
 }
 
 render = web.template.render(
-    'templates/wiki',
+    'templates/ticket',
     base='base',
     globals=t_globals
 )
 
 class Index:
     def GET(self):
-        pages = tmw.get_pages()
+        pages = tmt.get_pages()
         return render.index(pages)
 
 class Page:
     def GET(self, url):
-        page = tmw.get_page_by_url(url)
+        page = tmt.get_page_by_url(url)
         if not page:
             raise web.seeother('/new?url=%s' % web.websafe(url))
         return render.view(page)
 
 class New:
     def not_page_exists(url):
-        return not bool(tmw.get_page_by_url(url))
+        return not bool(tmt.get_page_by_url(url))
 
     page_exists_validator = web.form.Validator(
         'Page already exists', not_page_exists)
 
     form = web.form.Form(
-        web.form.Textbox('url', web.form.notnull, page_exists_validator,
+        web.form.Textbox('summary', web.form.notnull,
             size=30,
-            description="Location:"),
-        web.form.Textbox('title', web.form.notnull, 
+            description="Summary:"),
+        web.form.Textbox('reporter', web.form.notnull,
             size=30,
-            description="Page title:"),
-        web.form.Textarea('content', web.form.notnull, 
-            rows=30, cols=80,
-            description="Page content:", post="Use <a href='http://en.wikipedia.org/wiki/Markdown'>markdown</a> syntax"),
-        web.form.Button('Create page'),
+            description="Reporter:"),
+        web.form.Textarea('description', web.form.notnull, 
+            rows=15, cols=80,
+            description="Description:", post="Use <a href='http://en.wikipedia.org/wiki/Markdown'>markdown</a> syntax"),
+        web.form.Dropdown('type',
+            args = ['task', 'feature', 'defect', 'enhancement'],
+            value = 'feature',
+            description="Type:"),
+        web.form.Dropdown('priority',
+            args = ['blocker', 'critical', 'major', 'minor', 'trivial'],
+            value = 'major',
+            description="Priority:"),
+        web.form.Textbox('start', web.form.notnull,
+            size=30,
+            description="Start(YYYY/MM/DD):"),
+        web.form.Textbox('end', web.form.notnull,
+            size=30,
+            description="End(YYYY/MM/DD):"),
+        web.form.Textbox('assignee',
+            size=30,
+            description="Assign to:"),
+
+        web.form.Button('Create ticket'),
     )
 
     def GET(self):
@@ -55,12 +73,12 @@ class New:
         form = self.form()
         if not form.validates():
             return render.new(form)
-        tmw.new_page(form.d.url, form.d.title, form.d.content)
+        tmt.new_page(form.d.url, form.d.title, form.d.content)
         raise web.seeother('/wiki/' + form.d.url)
 
 class Delete:
     def POST(self, id):
-        tmw.del_page(int(id))
+        tmt.del_page(int(id))
         raise web.seeother('/wiki/')
 
 class Edit:
@@ -79,7 +97,7 @@ class Edit:
     )
 
     def GET(self, id):
-        page = tmw.get_page_by_id(int(id))
+        page = tmt.get_page_by_id(int(id))
         form = self.form()
         form.fill(page)
         return render.edit(page, form)
@@ -87,9 +105,9 @@ class Edit:
 
     def POST(self, id):
         form = self.form()
-        page = tmw.get_page_by_id(int(id))
+        page = tmt.get_page_by_id(int(id))
         if not form.validates():
             return render.edit(page, form)
-        tmw.update_page(int(id), form.d.url, form.d.title, form.d.content)
+        tmt.update_page(int(id), form.d.url, form.d.title, form.d.content)
         raise web.seeother('/')
 
