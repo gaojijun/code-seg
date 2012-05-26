@@ -2,23 +2,38 @@ import trac.model.wiki as tmw
 import web
 import markdown
 
-t_globals = {
-    'datestr': web.datestr,
-    'markdown': markdown.markdown,
-}
+render = None
 
-render = web.template.render(
-    'templates/wiki',
-    base='base',
-    globals=t_globals
-)
+def updateRender():
+    t_globals = {
+        'datestr': web.datestr,
+        'markdown': markdown.markdown,
+        'context': web.ctx.session
+    }
+    global render
+    render = web.template.render(
+        'templates/wiki',
+        base='base',
+        globals=t_globals
+    )
+
+def loginRequired(f):
+    def _f(*args):
+        if web.ctx.session.login:
+            updateRender()
+            return f(*args)
+        else:
+            raise web.seeother('/login')
+    return _f
 
 class Index:
+    @loginRequired
     def GET(self):
         pages = tmw.get_pages()
         return render.index(pages)
 
 class Page:
+    @loginRequired
     def GET(self, url):
         page = tmw.get_page_by_url(url)
         if not page:
@@ -45,12 +60,14 @@ class New:
         web.form.Button('Create page'),
     )
 
+    @loginRequired
     def GET(self):
         url = web.input(url='').url
         form = self.form()
         form.fill({'url': url})
         return render.new(form)
 
+    @loginRequired
     def POST(self):
         form = self.form()
         if not form.validates():
@@ -59,9 +76,10 @@ class New:
         raise web.seeother('/wiki/' + form.d.url)
 
 class Delete:
+    @loginRequired
     def POST(self, id):
         tmw.del_page(int(id))
-        raise web.seeother('/wiki/')
+        raise web.seeother('/wiki')
 
 class Edit:
 
@@ -78,6 +96,7 @@ class Edit:
         web.form.Button('Update page'),
     )
 
+    @loginRequired
     def GET(self, id):
         page = tmw.get_page_by_id(int(id))
         form = self.form()
@@ -85,11 +104,12 @@ class Edit:
         return render.edit(page, form)
 
 
+    @loginRequired
     def POST(self, id):
         form = self.form()
         page = tmw.get_page_by_id(int(id))
         if not form.validates():
             return render.edit(page, form)
         tmw.update_page(int(id), form.d.url, form.d.title, form.d.content)
-        raise web.seeother('/')
+        raise web.seeother('/wiki')
 

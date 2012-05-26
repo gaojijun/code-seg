@@ -1,10 +1,10 @@
-$def with (pages)
+$def with (tickets)
 
-<h2>Wiki Pages:</h2>
+<h2>Tickets:</h2>
 
 <ul>
-$for page in pages:
-    <li><a href="/wiki/$page.url">$page.url</a></li>
+$for ticket in tickets:
+    <li><a href="/ticket/$ticket.id">$ticket.id</a></li>
 
 </ul>
 

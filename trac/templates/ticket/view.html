@@ -1,9 +1,7 @@
-$def with (page)
+$def with (ticket)
 
-$var title: $page.title
 
-<h1>$page.title</h1>
+<h1>$ticket.summary</h1>
 
-$:markdown(page.content)
 
-<a href="/wiki/edit/$page.id">Edit</a>
+<a href="/ticket/edit/$ticket.id">Edit</a>

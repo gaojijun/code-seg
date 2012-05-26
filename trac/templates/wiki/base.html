@@ -34,6 +34,9 @@ $def with (page)
 <div id="nav">
 <div id="content1">
 <ul>
+        $if context.login == 1:
+            <li width=100>logged in as $context.username</li>
+            <li width=100><a href="/logout">Logout</a></li>
         <li width=100><a href="/wiki">Wiki</a></li>
         <li width=100><a href="/wiki/new">New Wiki</a></li>
         <li width=100><a href="/ticket">Ticket</a></li>

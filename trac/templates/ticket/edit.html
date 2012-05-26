@@ -1,6 +1,6 @@
 $def with (page, form)
 
-<h1>Edit $form.d.title</h1>
+<h1>Edit $form.d.summary</h1>
 
 <form action="" method="post">
 $:form.render()
@@ -8,6 +8,6 @@ $:form.render()
 
 
 <h2>Delete page?</h2>
-<form action="/wiki/delete/$page.id" method="post">
+<form action="/ticket/delete/$page.id" method="post">
     <input type="submit" value="Delete page"/>
 </form>
