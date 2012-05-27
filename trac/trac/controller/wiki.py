@@ -50,7 +50,7 @@ class New:
     form = web.form.Form(
         web.form.Textbox('url', web.form.notnull, page_exists_validator,
             size=30,
-            description="Location:"),
+            description="Wiki URL:"),
         web.form.Textbox('title', web.form.notnull, 
             size=30,
             description="Page title:"),

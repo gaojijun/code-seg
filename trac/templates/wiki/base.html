@@ -2,6 +2,7 @@ $def with (page)
 
 <html>
 <head>
+    <script type="text/javascript" scr="static/js/jquery.min.js"></script>
     $if page.has_key('title'):
         <title>$page.title</title>
     $else:
@@ -37,8 +38,9 @@ $def with (page)
         $if context.login == 1:
             <li width=100>logged in as $context.username</li>
             <li width=100><a href="/logout">Logout</a></li>
+        $if context.user.isadmin:
+            <li width=100><a href="/user">User</a></li>
         <li width=100><a href="/wiki">Wiki</a></li>
-        <li width=100><a href="/wiki/new">New Wiki</a></li>
         <li width=100><a href="/ticket">Ticket</a></li>
         <li width=100><a href="/ticket/new">New Ticket</a></li>
 </ul>

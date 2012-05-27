@@ -6,4 +6,5 @@ $var title: $page.title
 
 $:markdown(page.content)
 
-<a href="/wiki/edit/$page.id">Edit</a>
+$if context.user.isadmin or context.user.editwiki:
+    <a href="/wiki/edit/$page.id">Edit</a>

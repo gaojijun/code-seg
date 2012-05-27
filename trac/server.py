@@ -1,6 +1,8 @@
 import web
+import trac.controller.user as tcu
 import trac.controller.wiki as tcw
 import trac.controller.ticket as tct
+import trac.model.user as tmu
 # import trac.controller.login as tcl
 import markdown
 
@@ -10,11 +12,19 @@ urls = (
     '/', 'Index',
     '/login', 'Login',
     '/logout', 'Logout',
+
+    '/user', tcu.Index,
+    '/user/new', tcu.New,
+    '/user/edit/(\d+)', tcu.Edit,
+    '/user/delete/(\d+)', tcu.Delete,
+    '/user/(.*)', tcu.View,
+
     '/wiki', tcw.Index,
     '/wiki/new', tcw.New,
     '/wiki/edit/(\d+)', tcw.Edit,
     '/wiki/delete/(\d+)', tcw.Delete,
     '/wiki/(.*)', tcw.Page,
+
     '/ticket', tct.Index,
     '/ticket/new', tct.New,
     '/ticket/edit/(\d+)', tct.Edit,
@@ -56,7 +66,7 @@ t_globals = {
 
 render = web.template.render(
     'templates/login',
-    base='base',
+    # base='base',
     globals=t_globals
 )
 
@@ -79,9 +89,11 @@ class Login:
         if not form.validates():
             return render.Login(form)
         print form.d.username
-        if (form.d.username, form.d.password) in allowed:
+        user = tmu.checkPassword(form.d.username, form.d.password)
+        if user: 
             session.login = 1
             session.username = form.d.username
+            session.user = user
             raise web.seeother('/wiki')
         else:
             raise web.seeother('/login')
