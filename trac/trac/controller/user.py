@@ -75,8 +75,9 @@ class New:
         form = self.form()
         if not form.validates():
             return render.new(form)
-        tmu.new_user(username=form.d.username, password=form.d.password,
-            email=form.d.email, isadmin=form.d.isadmin)
+        fields = copy.copy(form.d)
+        del fields['Create user']
+        tmu.new_user(**fields)
         raise web.seeother('/user')
 
 class Delete:
@@ -138,7 +139,6 @@ class Edit:
             return render.edit(user, form)
         fields = copy.copy(form.d)
         del fields['Edit user']
-        tmu.update_user(int(id),**fields)# password=form.d.password,
-                      #  email=form.d.email, isadmin=form.d.isadmin)
+        tmu.update_user(int(id),**fields)
         raise web.seeother('/user')
 

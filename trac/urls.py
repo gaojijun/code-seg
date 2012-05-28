@@ -4,8 +4,15 @@ import trac.controller.wiki as tcw
 import trac.controller.ticket as tct
 import trac.controller.login as tcl
 
+class Index:
+    def GET(self):
+        if web.ctx.session.login:
+            raise web.seeother('/wiki')
+        else:
+            raise web.seeother('/login')
+
 urls = (
-    '/', 'Index',
+    '/', Index,
 
     '/login', tcl.Login,
     '/logout', tcl.Logout,
@@ -29,9 +36,3 @@ urls = (
     '/ticket/(.*)', tct.Ticket,
 )
 
-class Index:
-    def GET(self):
-        if session.login:
-            raise web.seeother('/wiki')
-        else:
-            raise web.seeother('/login')

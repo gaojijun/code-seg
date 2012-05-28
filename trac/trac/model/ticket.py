@@ -12,13 +12,19 @@ def get_ticket_by_id(id):
     except IndexError:
         return None
 
-def new_ticket(summary):
-    id = db.insert('tickets', summary=summary)
+def get_changes_by_id(id):
+    return db.select('changes', where='ticketId=$id', vars=locals())
+
+def new_ticket(**args):
+    id = db.insert('tickets', **args)
+    return id
+
+def new_change(**args):
+    id = db.insert('changes', **args)
     return id
 
 def del_ticket(id):
     db.delete('tickets', where="id=$id", vars=locals())
 
-def update_ticket(id, summary):
-    db.update('tickets', where="id=$id", vars=locals(),
-        summary=summary)
+def update_ticket(id, **args):
+    db.update('tickets', where="id=$id", vars=locals(), **args)
