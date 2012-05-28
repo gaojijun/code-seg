@@ -52,29 +52,29 @@ class New:
         web.form.Textbox('summary', web.form.notnull,
             size=30,
             description="Summary:"),
-        # web.form.Textbox('reporter', web.form.notnull,
-        #     size=30,
-        #     description="Reporter:"),
-        # web.form.Textarea('description', web.form.notnull, 
-        #     rows=15, cols=80,
-        #     description="Description:", post="Use <a href='http://en.wikipedia.org/wiki/Markdown'>markdown</a> syntax"),
-        # web.form.Dropdown('type',
-        #     args = ['task', 'feature', 'defect', 'enhancement'],
-        #     value = 'feature',
-        #     description="Type:"),
-        # web.form.Dropdown('priority',
-        #     args = ['blocker', 'critical', 'major', 'minor', 'trivial'],
-        #     value = 'major',
-        #     description="Priority:"),
-        # web.form.Textbox('start', web.form.notnull,
-        #     size=30,
-        #     description="Start(YYYY/MM/DD):"),
-        # web.form.Textbox('end', web.form.notnull,
-        #     size=30,
-        #     description="End(YYYY/MM/DD):"),
-        # web.form.Textbox('assignee',
-        #     size=30,
-        #     description="Assign to:"),
+        web.form.Textbox('reporter', web.form.notnull,
+            size=30,
+            description="Reporter:"),
+        web.form.Textarea('description', web.form.notnull, 
+            rows=15, cols=80,
+            description="Description:", post="Use <a href='http://en.wikipedia.org/wiki/Markdown'>markdown</a> syntax"),
+        web.form.Dropdown('type',
+            args = ['task', 'feature', 'defect', 'enhancement'],
+            value = 'feature',
+            description="Type:"),
+        web.form.Dropdown('priority',
+            args = ['blocker', 'critical', 'major', 'minor', 'trivial'],
+            value = 'major',
+            description="Priority:"),
+        web.form.Textbox('start', web.form.notnull,
+            size=30,
+            description="Start(YYYY/MM/DD):"),
+        web.form.Textbox('end', web.form.notnull,
+            size=30,
+            description="End(YYYY/MM/DD):"),
+        web.form.Textbox('assignee',
+            size=30,
+            description="Assign to:"),
 
         web.form.Button('Create ticket'),
     )
@@ -83,7 +83,7 @@ class New:
     def GET(self):
         url = web.input(url='').url
         form = self.form()
-        form.fill({'url': url})
+        form.fill({'reporter': web.ctx.session.user.username})
         return render.new(form)
 
     @loginRequired
