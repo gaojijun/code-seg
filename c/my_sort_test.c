@@ -42,9 +42,39 @@ void test_MergeSort() {
     }
 }
 
+void test_BubbleSort() {
+    int a[6] = {4,2,3,5,1,0}; 
+    int b[6] = {0,1,2,3,4,5};
+    int i;
+    BubbleSort(a, 6);
+    if ( memcmp(a, b, sizeof(a)) == 0 )
+        printf("BubbleSort test passed!\n");
+    else {
+        printf("BubbleSort test failed!\n");
+        for ( i=0; i<6; i++ )
+            printf("test_BubbleSort: %d-%d\n", i, a[i]);
+    }
+}
+
+void test_SelectionSort() {
+    int a[6] = {4,2,3,5,1,0}; 
+    int b[6] = {0,1,2,3,4,5};
+    int i;
+    SelectionSort(a, 6);
+    if ( memcmp(a, b, sizeof(a)) == 0 )
+        printf("SelectionSort test passed!\n");
+    else {
+        printf("SelectionSort test failed!\n");
+        for ( i=0; i<6; i++ )
+            printf("test_SelectionSort: %d-%d\n", i, a[i]);
+    }
+}
+
 int main() {
     test_swap();
     test_InsertionSort();
     test_MergeSort();
+    test_BubbleSort();
+    test_SelectionSort();
     return 0;
 }

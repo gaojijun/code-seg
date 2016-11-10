@@ -53,3 +53,27 @@ void MergeSort(int *A, int length){
     memcpy(A, tempArr, length * sizeof(int));
     free(tempArr);
 }
+
+void BubbleSort(int *A, int length){
+    int i, j;
+    for ( i = length-1; i >= 1; i-- ) { // set one item in A[length-1...1] each loop.
+        for ( j = 0; j <= i-1; j++ ) {
+            if ( A[j] > A[j+1] ) {
+                swap(&A[j], &A[j+1]);
+            }
+        }
+    }
+}
+
+void SelectionSort(int *A, int length){
+    int i, j, max;
+    for ( i = length-1; i >= 1; i-- ) { // set one item in A[length-1...1] each loop.
+        max = i;
+        for ( j = 0; j <= i-1; j++ ) {
+            if ( A[j] > A[max] ) {
+                max = j;
+            }
+        }
+        swap(&A[max], &A[i]);
+    }
+}
