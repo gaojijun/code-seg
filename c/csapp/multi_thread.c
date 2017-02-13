@@ -1,3 +1,5 @@
+// http://blog.csdn.net/morewindows/article/details/7442333
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
