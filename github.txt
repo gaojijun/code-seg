@@ -1,0 +1,11 @@
+add SSH keys to the ssh-agent
+
+Q:	git push origin master
+	Username for 'https://github.com':
+
+A:	Don't use HTTP use SSH instead
+	change
+	https://github.com/WEMP/project-slideshow.git
+	to
+	git@github.com:WEMP/project-slideshow.git
+	you can do it in .git/config file
